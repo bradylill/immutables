@@ -5,7 +5,8 @@
   (:gen-class))
 
 (defn render-app []
-  {:status 200
+  (response/redirect "/game.html")
+  #_{:status 200
    :headers {"Content-Type" "text/html"}
    :body
    (str "<!DOCTYPE html>"

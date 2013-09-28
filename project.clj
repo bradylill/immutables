@@ -4,7 +4,10 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [ring "1.2.0"]
                  [org.clojure/clojurescript "0.0-1889"]
-                 [com.cemerick/piggieback "0.1.0"]]
+                 [org.clojure/core.async "0.1.222.0-83d0c2-alpha"]
+                 [jayq "2.4.0"]
+                 [com.cemerick/piggieback "0.1.0"]
+                 [rm-hull/monet "0.1.8"]]
   :injections [(require '[cljs.repl.browser :as brepl]
                         '[cemerick.piggieback :as pb])
                (defn browser-repl []
@@ -18,6 +21,7 @@
              {:cljsbuild {:builds
                           [{:source-paths ["src/brepl" "src/cljs"]
                             :compiler {:output-to "resources/public/js/cljs.js"
+                                       :externs ["resources/public/js/externs/jquery-1.9.js"]
                                        :optimizations :simple
                                        :pretty-print true}
                             :jar true}]}}
@@ -25,6 +29,7 @@
              {:cljsbuild {:builds
                           [{:source-paths ["src/cljs"]
                             :compiler {:output-to "resources/public/js/cljs.js"
+                                       :externs ["resources/public/js/externs/jquery-1.9.js"]
                                        :optimizations :advanced
                                        :pretty-print false}
                             :jar true}]}}}
