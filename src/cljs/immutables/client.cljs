@@ -20,35 +20,35 @@
 
 (def active (atom true))
 
-(def slowth (atom 100))
+(def slowth (atom 1000))
 
-(defn animloop [chan timestamp]
-  (.requestAnimationFrame js/window (partial animloop chan))
-  (put! chan timestamp))
-
-(defn a-game-loop []
-  (let [anim-chan (chan)
+(defn game-loop []
+  (let [anim-chan (au/anim-ch active)
         ajax-chan (au/ajax-loop "world" slowth active)]
-    (animloop anim-chan 0)
     (go
      (loop []
        (when @active
          (let [[value ch] (alts! [anim-chan ajax-chan])]
-           (if (=  ch
-                   anim-chan) (do
-                         (log "anim frame time:" value))
-              (do
-                         (log "ajax result!")
-                         (graphics/draw-map ctx value))))
+           (if (= ch anim-chan)
+             (do
+               (log "anim frame time:" value))
+             (do
+               (log "ajax result!")
+               (graphics/draw-map ctx value))))
          (recur))))))
 
 (defn start-game []
   (reset! active true)
-  (a-game-loop))
+  (game-loop))
 
 (defn stop-game []
   (reset! active false))
 
-(def clickable ($ :#clickable))
+(defn init-world []
+  (ajax "init"
+        {:dataType "edn"
+         :success identity}))
+
 (jq/bind ($ :#start) :click start-game)
 (jq/bind ($ :#stop) :click stop-game)
+(jq/bind ($ :#init) :click init-world)
