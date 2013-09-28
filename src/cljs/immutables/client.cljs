@@ -22,27 +22,25 @@
 
 (def slowth (atom 50))
 
-(def last-world (atom nil))
-(def last-timestamp (atom 0))
+(defn js-now [] (.now (.-performance js/window)))
+
+(defn scaled-time [now last-time]
+  (/ (- now last-time) 50.0))
 
 (defn game-loop []
   (let [anim-chan (au/anim-ch active)
         ajax-chan (au/ajax-loop "world" slowth active)]
     (go
-     (loop []
+     (loop [state {:world {} :timestamp (js-now)}]
        (when @active
-         (let [[value ch] (alts! [anim-chan ajax-chan])]
-           (if (= ch anim-chan)
-             (do
-               (log "anim frame time:" value)
-               (graphics/draw-map ctx @last-world (/ (- value @last-timestamp) 50.0))
-               )
-             (do
-               (log "ajax result!")
-               (reset! last-world value)
-               (reset! last-timestamp (.now (.-performance js/window)))
-               )))
-         (recur))))))
+         (let [next-state
+                 (alt!
+                    anim-chan ([val] (do
+                                       (graphics/draw-map
+                                          ctx (:world state) (scaled-time val (:timestamp state)))
+                                       state)) ; no state change
+                    ajax-chan ([val] {:world val :timestamp (js-now)}))]
+           (recur next-state)))))))
 
 (defn start-game []
   (reset! active true)
