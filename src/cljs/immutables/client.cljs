@@ -20,7 +20,7 @@
 (defn draw-something []
   (canvas/add-entity ctx :background
                      (canvas/entity {:x 50 :y 50 :w 100 :h 100}
-                                    nil ;;update function
+                                    (fn [s] (update-in s [:x] inc)) ;;update function
                                     (fn [ctx box]
                                       (-> ctx
                                           (canvas/fill-style "#596d31")
