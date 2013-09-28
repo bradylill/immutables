@@ -11,6 +11,7 @@
 (defroutes app
   (GET "/" [] (response/file-response "game.html" {:root "resources/public"}))
   (GET "/world" [] (response/response (world/render)))
+  (route/resources "/")
   (route/not-found (response/file-response "help.html" {:root "resources/public"})))
 
 (defn -main [& args]
