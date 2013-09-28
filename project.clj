@@ -3,8 +3,9 @@
   :url "http://example.com/FIXME"
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [ring "1.2.0"]
-                 [org.clojure/clojurescript "0.0-1889"]
-                 [org.clojure/core.async "0.1.222.0-83d0c2-alpha"]
+                 [org.clojure/clojurescript "0.0-1909"]
+                 [org.clojars.magomimmo/core.async "0.1.0-SNAPSHOT"]
+                 ;[org.clojure/core.async "0.1.222.0-83d0c2-alpha"]
                  [jayq "2.4.0"]
                  [com.cemerick/piggieback "0.1.0"]
                  [rm-hull/monet "0.1.8"]

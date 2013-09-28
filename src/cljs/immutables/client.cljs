@@ -34,9 +34,26 @@
   (when @active
     (ajax-map (fn [] (after-timeout @slowth #(game-loop))))))
 
+(defn a-ajax-get [url]
+  (let [ch (chan 1)]
+    (ajax url
+          {:dataType "edn"
+           :success (fn [data] (do
+                                (go (>! ch data)
+                                    (close! ch))))})
+    ch))
+
+(defn a-game-loop []
+  (go
+   (loop []
+     (when @active
+       (graphics/draw-map ctx (<! (a-ajax-get "world")))
+       (<! (async/timeout @slowth))
+       (recur)))))
+
 (defn start-game []
   (reset! active true)
-  (game-loop))
+  (a-game-loop))
 
 (defn stop-game []
   (reset! active false))
