@@ -10,8 +10,7 @@
 (defn init []
   (.start (Thread. (fn [] (loop [] 
                             (world/update)
-                            (println "updating")
-                            (Thread/sleep 5000)
+                            (Thread/sleep 1000)
                             (recur))))))
 
 (defroutes app
