@@ -1,1 +1,7 @@
 .DS_Store
+target/
+resources/public/js/cljs.js
+.lein-repl-history
+.nrepl-port
+.repl/
+out/
