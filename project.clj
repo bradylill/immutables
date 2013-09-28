@@ -8,7 +8,8 @@
                  [jayq "2.4.0"]
                  [com.cemerick/piggieback "0.1.0"]
                  [rm-hull/monet "0.1.8"]
-                 [compojure "1.1.5"]]
+                 [compojure "1.1.5"]
+                 [net.mikera/vectorz-clj "0.14.0"]]
   :injections [(require '[cljs.repl.browser :as brepl]
                         '[cemerick.piggieback :as pb])
                (defn browser-repl []
