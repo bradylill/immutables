@@ -2,19 +2,15 @@
   (:require [clojure.core.matrix           :as mx]
             [clojure.core.matrix.operators :as mxo]))
 
-(defn- boid-location [] 
-  [(Math/abs (* (Math/sin (System/currentTimeMillis)) 512))
-   (Math/abs (* (Math/cos (System/currentTimeMillis)) 512))])
-
 (defn- rand-range [start end]
   (let [val-range (range start end)]
     (nth val-range (rand-int (count val-range)))))
 
 (defn- update-target [object]
-  (assoc-in object [:target] (boid-location)))
+  (assoc-in object [:target] [200 200]))
 
 (defn- update-velocity [object]
-  (let [velocity (mx/normalise (mxo/- (:target object) (:location object)))]
+  (let [velocity (mxo/* (mx/normalise (mxo/- (:target object) (:location object))) 2)]
   (assoc-in object [:velocity] velocity)))
 
 (defn- move-object [object]
