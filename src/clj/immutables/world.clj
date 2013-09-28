@@ -1,6 +1,5 @@
 (ns immutables.world
-  (:require [clojure.core.matrix           :as mx]
-            [clojure.core.matrix.operators :as mxo]))
+  (:require [immutables.object :as object]))
 
 (def world (atom {:objects []}))
 
@@ -18,24 +17,8 @@
                                {:location [553.962 330.598] :name "steve"}
                                {:location [335.016 270.246] :name "andy"}]})
 
-(defn- move-object [object]
-  (let [location (:location object)
-        velocity (:velocity object)]
-    (assoc-in object [:location] (mxo/+ location velocity))))
-
-(defn- rand-range [start end]
-  (let [val-range (range start end)]
-    (nth val-range (rand-int (count val-range)))))
-
-(defn- update-velocity [object]
-  (assoc-in object [:velocity] [(rand-range -10 10)
-                                (rand-range -10 10)]))
-
 (defn- update-objects [objects]
-  (map (fn [object] (-> object
-                       (update-velocity)
-                       (move-object)))
-       objects))
+  (pmap #(object/update % objects) objects))
 
 (defn render []
   (str @world))
