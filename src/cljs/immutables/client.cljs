@@ -7,7 +7,8 @@
                       offset] :as jq]
    [jayq.util :refer [log]]
    [monet.canvas :refer [get-context] :as canvas]
-   [immutables.graphics :as graphics])
+   [immutables.graphics :as graphics]
+   [immutables.async-utils :as au])
   (:require-macros [cljs.core.async.macros :as m :refer [go alt!]]))
 
 (defn handle-click []
@@ -17,39 +18,29 @@
 (def ctx
     (canvas/get-context (.get the-canvas 0) "2d"))
 
-(defn ajax-map [thenfn]
-  (log "ajax?")
-  (ajax "world"
-      {:dataType "edn"
-       :success  (fn [data] (do (graphics/draw-map ctx data) (thenfn)))}))
-
-(defn after-timeout [time thenfn]
-  (js/setTimeout thenfn time))
-
 (def active (atom true))
 
-(def slowth (atom 1000))
+(def slowth (atom 100))
 
-(defn game-loop []
-  (when @active
-    (ajax-map (fn [] (after-timeout @slowth #(game-loop))))))
-
-(defn a-ajax-get [url]
-  (let [ch (chan 1)]
-    (ajax url
-          {:dataType "edn"
-           :success (fn [data] (do
-                                (go (>! ch data)
-                                    (close! ch))))})
-    ch))
+(defn animloop [chan timestamp]
+  (.requestAnimationFrame js/window (partial animloop chan))
+  (put! chan timestamp))
 
 (defn a-game-loop []
-  (go
-   (loop []
-     (when @active
-       (graphics/draw-map ctx (<! (a-ajax-get "world")))
-       (<! (async/timeout @slowth))
-       (recur)))))
+  (let [anim-chan (chan)
+        ajax-chan (au/ajax-loop "world" slowth active)]
+    (animloop anim-chan 0)
+    (go
+     (loop []
+       (when @active
+         (let [[value ch] (alts! [anim-chan ajax-chan])]
+           (if (=  ch
+                   anim-chan) (do
+                         (log "anim frame time:" value))
+              (do
+                         (log "ajax result!")
+                         (graphics/draw-map ctx value))))
+         (recur))))))
 
 (defn start-game []
   (reset! active true)
