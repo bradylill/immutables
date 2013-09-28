@@ -7,6 +7,12 @@
             [immutables.world         :as world])
   (:gen-class))
 
+(defn init-game []
+  (.start (Thread. (fn [] (loop [] 
+                            (world/update)
+                            (println "updating")
+                            (Thread/sleep 5000)
+                            (recur))))))
 
 (defroutes app
   (GET "/" [] (response/file-response "game.html" {:root "resources/public"}))
@@ -17,5 +23,6 @@
   (route/not-found (response/file-response "help.html" {:root "resources/public"})))
 
 (defn -main [& args]
+  (init-game)
   (jetty/run-jetty app {:port 3000}))
 

@@ -10,6 +10,9 @@
 (defn render []
   (str @world))
 
+(defn update []
+  (swap! world (fn [old] old)))
+
 (defn init []
   (reset! world starting-world))
 
