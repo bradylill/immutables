@@ -37,5 +37,5 @@
                                        :pretty-print false}
                             :jar true}]}}}
   :main immutables.server
-  :ring {:handler immutables.server/app})
+  :ring {:init immutables.server/init :handler immutables.server/app})
 
