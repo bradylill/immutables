@@ -7,7 +7,8 @@
                  [org.clojure/core.async "0.1.222.0-83d0c2-alpha"]
                  [jayq "2.4.0"]
                  [com.cemerick/piggieback "0.1.0"]
-                 [rm-hull/monet "0.1.8"]]
+                 [rm-hull/monet "0.1.8"]
+                 [compojure "1.1.5"]]
   :injections [(require '[cljs.repl.browser :as brepl]
                         '[cemerick.piggieback :as pb])
                (defn browser-repl []
