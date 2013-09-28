@@ -46,11 +46,29 @@
 (defn draw-the-map []
   (draw-map world-default))
 
-(defn ajax-map []
-  (log "ajax?")
+(defn ajax-map [thenfn]
   (ajax "world"
       {:dataType "edn"
-       :success  (fn [data] (draw-map data))}))
+       :success  (fn [data] (do (draw-map data) (thenfn)))}))
+
+(defn after-timeout [time thenfn]
+  (js/setTimeout thenfn time))
+
+(def active (atom true))
+
+(def slowth (atom 1000))
+
+(defn game-loop []
+  (when @active
+    (ajax-map (fn [] (after-timeout @slowth #(game-loop))))))
+
+(defn start-game []
+  (reset! active true)
+  (game-loop))
+
+(defn stop-game []
+  (reset! active false))
 
 (def clickable ($ :#clickable))
-(jq/bind clickable :click ajax-map)
+(jq/bind ($ :#start) :click start-game)
+(jq/bind ($ :#stop) :click stop-game)
