@@ -23,8 +23,8 @@
 (defmulti react (fn [object] (:mood object)))
 (defmethod react :default [object]
   (-> object
-      (update-velocity)
-      (move-object)))
+      (move-object)
+      (update-velocity)))
 
 (defn update [object objects]
   (-> object
