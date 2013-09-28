@@ -20,7 +20,10 @@
 
 (def active (atom true))
 
-(def slowth (atom 1000))
+(def slowth (atom 50))
+
+(def last-world (atom nil))
+(def last-timestamp (atom 0))
 
 (defn game-loop []
   (let [anim-chan (au/anim-ch active)
@@ -31,10 +34,14 @@
          (let [[value ch] (alts! [anim-chan ajax-chan])]
            (if (= ch anim-chan)
              (do
-               (log "anim frame time:" value))
+               (log "anim frame time:" value)
+               (graphics/draw-map ctx @last-world (/ (- value @last-timestamp) 50.0))
+               )
              (do
                (log "ajax result!")
-               (graphics/draw-map ctx value))))
+               (reset! last-world value)
+               (reset! last-timestamp (.now (.-performance js/window)))
+               )))
          (recur))))))
 
 (defn start-game []
