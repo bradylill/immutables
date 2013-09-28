@@ -20,7 +20,7 @@
 
 (def active (atom true))
 
-(def slowth (atom 100))
+(def slowth (atom 1000))
 
 (defn game-loop []
   (let [anim-chan (au/anim-ch active)
