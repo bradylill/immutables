@@ -23,8 +23,13 @@
         velocity (:velocity object)]
     (assoc-in object [:location] (mxo/+ location velocity))))
 
+(defn- rand-range [start end]
+  (let [val-range (range start end)]
+    (nth val-range (rand-int (count val-range)))))
+
 (defn- update-velocity [object]
-  (assoc-in object [:velocity] [(rand 10) (rand 10)])) 
+  (assoc-in object [:velocity] [(rand-range -10 10)
+                                (rand-range -10 10)]))
 
 (defn- update-objects [objects]
   (map (fn [object] (-> object
