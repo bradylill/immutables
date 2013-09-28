@@ -4,7 +4,10 @@ body {
   background-color: #8eba8e;
 }
 
-div {
+p {
+  position: absolute;
+  top: 4px;
+  right: 50px;
   background: green;
   margin: 3em;
   padding: 1em;
