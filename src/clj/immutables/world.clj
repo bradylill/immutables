@@ -1,5 +1,5 @@
 (ns immutables.world
-  (:require [immutables.object :as bot]))
+  (:require [immutables.bot :as bot]))
 
 (def world (atom {:bots []}))
 

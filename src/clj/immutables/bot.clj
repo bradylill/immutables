@@ -1,4 +1,4 @@
-(ns immutables.object
+(ns immutables.bot
   (:require [clojure.core.matrix           :as mx]
             [clojure.core.matrix.operators :as mxo]))
 
