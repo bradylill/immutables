@@ -14,15 +14,15 @@
   )
 
 (defn draw-energy [ctx energy]
-  (canvas/fill-style ctx "#FF0000")
+  (canvas/fill-style ctx "#00FF00")
   (canvas/fill-rect ctx {:x (- (* 7 scale)) :y (- (* 11 scale)) :w (* 14 scale) :h (* 1 scale)})
   )
 
 (defn draw-object [ctx delta {name :name [x y] :location [vx vy] :velocity energy :energy}]
   (canvas/save ctx)
   (canvas/translate ctx (+ x (* vx delta)) (+ y (* vy delta)))
-  (canvas/fill-style ctx "#00FF00")
-  (canvas/text ctx {:text name :x (* (.-width (.measureText ctx name)) (- 0.5)) :y 18})
+  (canvas/fill-style ctx "#FFFFFF")
+  (canvas/text ctx {:text name :x (* (.-width (.measureText ctx name)) (- 0.5)) :y (* 14 scale)})
   (draw-energy ctx energy)
   (canvas/rotate ctx (Math/atan2 (- vx) vy))
   (canvas/stroke-style ctx "#FF0000")
