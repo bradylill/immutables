@@ -2,6 +2,7 @@
   (:require [immutables.bot :as bot]))
 
 (def world (atom {:bots []}))
+(def max-bots 30)
 
 (def starting-world {:bots [{:tactic :chase  :armor 5.5 :attack-radius 35 :damage 6.5 :speed 4 :sight 90 :energy 100.0 :target [500 200] :velocity [0 0] :location [618.047 809.0] :name "brady"}
                             {:tactic :chase  :armor 1.5 :attack-radius 25 :damage 0.5 :speed 2 :sight 30 :energy 100.0 :target [300 200] :velocity [0 0] :location [451.368 935.937] :name "korny"}
@@ -38,14 +39,15 @@
   (reset! world starting-world))
 
 (defn add-bot [new-bot]
-  (println "adding bot:" new-bot)
-  (swap! world (fn [current-world]
-                 (let [bots (:bots current-world)]
-                   (assoc-in current-world [:bots] (conj bots new-bot))))))
+  (if (<= (count (:bots @world)) max-bots)
+    (do (println "adding bot:" new-bot)
+        (swap! world (fn [current-world]
+                       (let [bots (:bots current-world)]
+                         (assoc-in current-world [:bots] (conj bots new-bot))))))
+    (println "full up on bots!")))
 
 (defn make-random-bot [name]
-  (add-bot {:tactic :chase :attack-radius 25 :damage 8.5 :speed 3 :sight 20 :energy 50.0 :target [840 525] :velocity [0 0] :location [(rand 1680) (rand 1050)] :name name})
-  )
+  (add-bot {:tactic :chase :attack-radius 25 :damage 8.5 :speed 3 :sight 20 :energy 50.0 :target [840 525] :velocity [0 0] :location [(rand 1680) (rand 1050)] :name name}))
 
 (defn as-int [str]
   (Integer/parseInt str))
