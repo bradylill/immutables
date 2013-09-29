@@ -18,7 +18,7 @@
                             {:speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1335.016 570.246] :name "andy"}]})
 
 (defn- update-bots [world]
-  (map #(bot/update % world) (:bots world)))
+  (pmap #(bot/update % world) (:bots world)))
 
 (defn render []
   (str @world))
