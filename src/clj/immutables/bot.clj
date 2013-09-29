@@ -6,11 +6,8 @@
   (let [val-range (range start end)]
     (nth val-range (rand-int (count val-range)))))
 
-(defn- update-target [bot]
-  (assoc-in bot [:target] [200 200]))
-
 (defn- update-velocity [bot]
-  (let [velocity (mxo/* (mx/normalise (mxo/- (:target bot) (:location bot))) 1)]
+  (let [velocity (mxo/* (mx/normalise (mxo/- (:target bot) (:location bot))) (:speed bot))]
   (assoc-in bot [:velocity] velocity)))
 
 (defn- move-bot [bot]
@@ -27,7 +24,7 @@
           bots))
 
 (defn- target-enemy [bot bots]
-  (let [enemy (first (scan-for-bots (:location bot) 30 bots))]
+  (let [enemy (first (scan-for-bots (:location bot) (:sight bot) bots))]
     (if (not (nil? enemy))
       (assoc-in bot [:target] (mxo/- (:location bot) (mxo/- (:location enemy) (:location bot))))
       (assoc-in bot [:target] [200 200]))))
