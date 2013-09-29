@@ -33,5 +33,5 @@
 (defn draw-map [ctx world delta]
   (canvas/clear-rect ctx {:x 0 :y 0 :w (.-width (.-canvas ctx)) :h (.-height (.-canvas ctx))})
   (canvas/save ctx)
-  (doall (map (fn [object] (draw-object ctx delta object)) (:objects world)))
+  (doall (map (fn [object] (draw-object ctx delta object)) (:bots world)))
   (canvas/restore ctx))

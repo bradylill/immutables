@@ -6,46 +6,45 @@
   (let [val-range (range start end)]
     (nth val-range (rand-int (count val-range)))))
 
-(defn- update-target [object]
-  (assoc-in object [:target] [200 200]))
+(defn- update-target [bot]
+  (assoc-in bot [:target] [200 200]))
 
-(defn- update-velocity [object]
-  (let [velocity (mxo/* (mx/normalise (mxo/- (:target object) (:location object))) 1)]
-  (assoc-in object [:velocity] velocity)))
+(defn- update-velocity [bot]
+  (let [velocity (mxo/* (mx/normalise (mxo/- (:target bot) (:location bot))) 1)]
+  (assoc-in bot [:velocity] velocity)))
 
-(defn- move-object [object]
-  (let [location (:location object)
-        velocity (:velocity object)]
-    (assoc-in object [:location] (mxo/+ location velocity))))
+(defn- move-bot [bot]
+  (let [location (:location bot)
+        velocity (:velocity bot)]
+    (assoc-in bot [:location] (mxo/+ location velocity))))
 
-(defn- scan-for-objects [location radius objects]
-  (filter (fn [object] 
-            (let [scan  (mxo/- (:location object) location)]
-              (and (> radius (Math/abs (first scan)))
-                   (> radius (Math/abs (second scan)))
-                   (not (= (:location object) location)))))
-          objects))
+(defn- scan-for-bots [location radius bots]
+  (filter (fn [bot] 
+            (let [scanned-bot (mxo/- (:location bot) location)]
+              (and (> radius (Math/abs (first scanned-bot)))
+                   (> radius (Math/abs (second scanned-bot)))
+                   (not (= (:location bot) location)))))
+          bots))
 
-(defn- target-enemy [object objects]
-  (let [enemy (first (scan-for-objects (:location object) 30 objects))]
+(defn- target-enemy [bot bots]
+  (let [enemy (first (scan-for-bots (:location bot) 30 bots))]
     (if (not (nil? enemy))
-      (assoc-in object [:target] (mxo/- (:location object) (mxo/- (:location enemy) (:location object))))
-      (assoc-in object [:target] [200 200]))))
+      (assoc-in bot [:target] (mxo/- (:location bot) (mxo/- (:location enemy) (:location bot))))
+      (assoc-in bot [:target] [200 200]))))
 
-(defmulti sense (fn [object objects] (:mood object)))
-(defmethod sense :default [object objects]
-  (-> object
-      (target-enemy objects)))
+(defmulti sense (fn [bot world] (:mood bot)))
+(defmethod sense :default [bot world]
+  (-> bot
+      (target-enemy (:bots world))))
 
-(defmulti react (fn [object] (:mood object)))
-(defmethod react :default [object]
-  (-> object
-      (move-object)
+(defmulti react (fn [bot] (:mood bot)))
+(defmethod react :default [bot]
+  (-> bot
+      (move-bot)
       (update-velocity)))
 
-(defn update [object objects]
-  (-> object
-      (sense objects)
+(defn update [bot world]
+  (-> bot
+      (sense world)
       (react)))
-
 
