@@ -42,18 +42,27 @@
                     ajax-chan ([val] {:world val :timestamp (js-now)}))]
            (recur next-state)))))))
 
+(def pausebtn ($ :#pause))
+
 (defn start-game []
   (reset! active true)
+  (jq/text pausebtn "Pause")
   (game-loop))
 
 (defn stop-game []
+  (jq/text pausebtn "Resume")
   (reset! active false))
+
+(defn toggle-paused []
+  (if @active
+    (stop-game)
+    (start-game)))
 
 (defn init-world []
   (ajax "init"
         {:dataType "edn"
          :success identity}))
 
-(jq/bind ($ :#start) :click start-game)
-(jq/bind ($ :#stop) :click stop-game)
+(jq/bind pausebtn :click toggle-paused)
 (jq/bind ($ :#init) :click init-world)
+(jq/document-ready start-game)
