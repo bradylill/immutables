@@ -11,6 +11,11 @@
                  [rm-hull/monet "0.1.8"]
                  [compojure "1.1.5"]
                  [net.mikera/vectorz-clj "0.14.0"]]
+  :aliases {
+            "prodrun" ["with-profile" "prod" "do" "cljsbuild" "clean," "ring" "server"]
+            "prodbuild" ["with-profile" "prod" "do" "cljsbuild" "clean," "ring" "uberjar"]
+            ; then scp target/immutables-0.1.0-SNAPSHOT-standalone.jar clojurecup@192.241.193.31:immutables.jar
+            }
   :injections [(require '[cljs.repl.browser :as brepl]
                         '[cemerick.piggieback :as pb])
                (defn browser-repl []
