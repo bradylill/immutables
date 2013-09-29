@@ -18,16 +18,25 @@
   (let [velocity (mxo/* (mx/normalise (mxo/- (:target bot) (:location bot))) (:speed bot))]
   (assoc-in bot [:velocity] velocity)))
 
-(defn- keep-inbounds [location]
-  (let [lx (first location)
-        ly (second location)]
-    [(mod lx world-width)
-     (mod ly world-height)]))
+(defn- keep-inbounds [bot]
+  (let [location (:location bot)
+        lx (first location)
+        ly (second location)
+        mx (/ world-width 2)
+        my (/ world-height 2)]
+    (cond
+      (> lx world-width)  (-> bot (assoc-in [:location] [2 ly]) (assoc-in [:target] [mx my]))
+      (< lx 0)            (-> bot (assoc-in [:location] [(- world-width 2) ly]) (assoc-in [:target] [mx my]))
+      (> ly world-height) (-> bot (assoc-in [:location] [lx 2]) (assoc-in [:target] [mx my]))
+      (< ly 0)            (-> bot (assoc-in [:location] [lx (- world-height 2)]) (assoc-in [:target] [mx my]))
+      :else bot)))
 
 (defn- move-bot [bot]
   (let [location (:location bot)
         velocity (:velocity bot)]
-    (assoc-in bot [:location] (mxo/+ location velocity))))
+    (-> bot
+        (assoc-in [:location] (mxo/+ location velocity))
+        (keep-inbounds))))
 
 (defn- scan-for-bots [location radius bots]
   (filter (fn [bot] 
@@ -51,8 +60,7 @@
 (defn- find-target [bot bots]
   (let [enemy (first (scan-for-bots (:location bot) (:sight bot) bots))]
     (if (not (nil? enemy))
-      (assoc-in bot [:target] (-> (tactic bot enemy)
-                                  (keep-inbounds)))
+      (assoc-in bot [:target] (tactic bot enemy))
       (if (nil? (:target bot))
         (assoc-in bot [:target] (mxo/+ (:location bot) (rand-location -40 40)))
         bot))))
