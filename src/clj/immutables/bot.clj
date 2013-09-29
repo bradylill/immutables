@@ -65,11 +65,13 @@
         (assoc-in bot [:target] (mxo/+ (:location bot) (rand-location -40 40)))
         bot))))
 
+(def on-target 3.0)
+(def too-far 300.0)
+
 (defn- clear-target [bot]
   (let [delta    (mxo/- (:target bot) (:location bot))
-        dx       (Math/abs (first delta))
-        dy       (Math/abs (second delta))]
-    (if (and (< dx 2) (< dy 2))
+        dist     (mx/length delta)]
+    (if (or (< dist on-target) (> dist too-far))
       (assoc-in bot [:target] nil)
       bot)))
 

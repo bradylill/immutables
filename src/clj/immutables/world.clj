@@ -5,7 +5,7 @@
 (def max-bots 30)
 
 (def starting-world {:bots [{:tactic :chase  :regen 0.01 :armor 5.5 :attack-radius 35 :damage 6.5 :speed 4 :sight 90 :energy 100.0 :target [500 200] :velocity [0 0] :location [618.047 809.0] :name "brady"}
-                            {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 2 :sight 30 :energy 100.0 :target [300 200] :velocity [0 0] :location [451.368 935.937] :name "korny"}
+                            {:tactic :chase  :regen 0.1  :armor 1.5 :attack-radius 25 :damage 0.5 :speed 2 :sight 30 :energy 100.0 :target [300 200] :velocity [0 0] :location [451.368 935.937] :name "korny"}
                             {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 60 :energy 100.0 :target [700 200] :velocity [0 0] :location [451.377 224.457] :name "jean"}
                             {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1082.714 634.363] :name "sarah"}
                             {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [82.837 169.189] :name "fred"}
