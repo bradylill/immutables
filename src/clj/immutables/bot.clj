@@ -35,6 +35,9 @@
 (defmethod tactic :escape [bot enemy]
   (mxo/- (:location bot) (mxo/- (:location enemy) (:location bot))))
 
+(defmethod tactic :default [bot enemy]
+  (:location bot))
+
 (defn- find-target [bot bots]
   (let [enemy (first (scan-for-bots (:location bot) (:sight bot) bots))]
     (if (not (nil? enemy))
