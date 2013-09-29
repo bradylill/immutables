@@ -10,16 +10,14 @@
 
 (def ^:const energy-colors ["#FF0000" "#FFFF00" "#00FF00"])
 
-(def ^:const bot-shape [
-                         [0.5 5.0]
-                         [5.0 -4.0]
-                         [2.0 -5.0]
-                         [1.5 -3.0]
-                         [-1.5 -3.0]
-                         [-2.0 -5.0]
-                         [-5.0 -4.0]
-                         [-0.5 5.0]
-                        ])
+(def ^:const bot-shape [[0.5 5.0]
+                        [5.0 -4.0]
+                        [2.0 -5.0]
+                        [1.5 -3.0]
+                        [-1.5 -3.0]
+                        [-2.0 -5.0]
+                        [-5.0 -4.0]
+                        [-0.5 5.0]])
 
 (defn get-bot-color [name]
   (str "#" (.toUpperCase (.toString (bit-and (bit-or (js/parseInt (str (reverse name)) 36) (bit-not (hash name))) 0xFFFFFF) 16))))
