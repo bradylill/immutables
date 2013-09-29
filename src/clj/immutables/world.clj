@@ -87,12 +87,12 @@
         max-range 30.0
         min-sight 10.0
         max-sight 80.0
-        bot-speed (scale speed min-speed max-speed)
-        bot-armor (scale (- 100 speed) min-armor max-armor)
-        bot-damage (scale damage min-damage max-damage)
-        bot-regen (scale (- 100 damage) min-regen max-regen)
-        bot-range (scale range min-range max-range)
-        bot-sight (scale (- 100 range) min-sight max-sight)
+        bot-speed (scale (- 100 speed) min-speed max-speed)
+        bot-armor (scale speed min-armor max-armor)
+        bot-damage (scale (- 100 damage) min-damage max-damage)
+        bot-regen (scale damage min-regen max-regen)
+        bot-range (scale (- 100 range) min-range max-range)
+        bot-sight (scale range min-sight max-sight)
         ]
     (add-bot {:tactic :chase  ; how to choose?
               :speed bot-speed
