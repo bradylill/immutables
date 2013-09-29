@@ -58,11 +58,6 @@
     (stop-game)
     (start-game)))
 
-(defn init-world []
-  (ajax "init"
-        {:dataType "edn"
-         :success identity}))
-
 (def modal-dialog ($ :#botModal))
 (def modal-close ($ :#modalClose))
 (def bot-name ($ :#botname))
@@ -95,7 +90,6 @@
   )
 
 (jq/bind pausebtn :click toggle-paused)
-(jq/bind ($ :#init) :click init-world)
 (jq/bind ($ :#info) :click nav-to-info)
 (jq/bind ($ :#modalCreate) :click create-bot-modal)
 (jq/bind ($ :#modalCancel) :click hide-modal)
