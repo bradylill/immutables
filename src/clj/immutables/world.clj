@@ -4,19 +4,19 @@
 (def world (atom {:bots []}))
 (def max-bots 30)
 
-(def starting-world {:bots [{:tactic :chase  :armor 5.5 :attack-radius 35 :damage 6.5 :speed 4 :sight 90 :energy 100.0 :target [500 200] :velocity [0 0] :location [618.047 809.0] :name "brady"}
-                            {:tactic :chase  :armor 1.5 :attack-radius 25 :damage 0.5 :speed 2 :sight 30 :energy 100.0 :target [300 200] :velocity [0 0] :location [451.368 935.937] :name "korny"}
-                            {:tactic :escape :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 60 :energy 100.0 :target [700 200] :velocity [0 0] :location [451.377 224.457] :name "jean"}
-                            {:tactic :escape :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1082.714 634.363] :name "sarah"}
-                            {:tactic :escape :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [82.837 169.189] :name "fred"}
-                            {:tactic :escape :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1084.84 256.605] :name "bob"}
-                            {:tactic :chase  :armor 1.5 :attack-radius 25 :damage 0.5 :speed 2 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [464.22 1001.742] :name "leo"}
-                            {:tactic :escape :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 80 :energy 100.0 :target [350 400] :velocity [0 0] :location [1218.664 378.174] :name "claire"}
-                            {:tactic :chase  :armor 1.5 :attack-radius 25 :damage 0.5 :speed 2 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1010.834 60.911] :name "cassie"}
-                            {:tactic :chase  :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [447.985 86.483] :name "mia"}
-                            {:tactic :chase  :armor 1.5 :attack-radius 25 :damage 0.5 :speed 4 :sight 10 :energy 100.0 :target [350 400] :velocity [0 0] :location [242.929 68.12] :name "erlangga"}
-                            {:tactic :chase  :armor 1.5 :attack-radius 25 :damage 0.5 :speed 4 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1053.962 630.598] :name "steve"}
-                            {:tactic :chase  :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1335.016 570.246] :name "andy"}]})
+(def starting-world {:bots [{:tactic :chase  :regen 0.01 :armor 5.5 :attack-radius 35 :damage 6.5 :speed 4 :sight 90 :energy 100.0 :target [500 200] :velocity [0 0] :location [618.047 809.0] :name "brady"}
+                            {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 2 :sight 30 :energy 100.0 :target [300 200] :velocity [0 0] :location [451.368 935.937] :name "korny"}
+                            {:tactic :escape :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 60 :energy 100.0 :target [700 200] :velocity [0 0] :location [451.377 224.457] :name "jean"}
+                            {:tactic :escape :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1082.714 634.363] :name "sarah"}
+                            {:tactic :escape :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [82.837 169.189] :name "fred"}
+                            {:tactic :escape :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1084.84 256.605] :name "bob"}
+                            {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 2 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [464.22 1001.742] :name "leo"}
+                            {:tactic :escape :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 80 :energy 100.0 :target [350 400] :velocity [0 0] :location [1218.664 378.174] :name "claire"}
+                            {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 2 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1010.834 60.911] :name "cassie"}
+                            {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [447.985 86.483] :name "mia"}
+                            {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 4 :sight 10 :energy 100.0 :target [350 400] :velocity [0 0] :location [242.929 68.12] :name "erlangga"}
+                            {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 4 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1053.962 630.598] :name "steve"}
+                            {:tactic :chase  :regen 0.01 :armor 1.5 :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1335.016 570.246] :name "andy"}]})
 
 (defn- update-bots [world]
   (pmap #(bot/update % world) (:bots world)))
@@ -81,8 +81,8 @@
         max-armor 2.0
         min-damage 1.0
         max-damage 10.0
-        min-regen 0.0
-        max-regen 10.0
+        min-regen 0.01
+        max-regen 0.1
         min-range 10.0
         max-range 30.0
         min-sight 10.0
@@ -92,8 +92,7 @@
         bot-damage (scale (- 100 damage) min-damage max-damage)
         bot-regen (scale damage min-regen max-regen)
         bot-range (scale (- 100 range) min-range max-range)
-        bot-sight (scale range min-sight max-sight)
-        ]
+        bot-sight (scale range min-sight max-sight)]
     (add-bot {:tactic :chase  ; how to choose?
               :speed bot-speed
               :armor bot-armor

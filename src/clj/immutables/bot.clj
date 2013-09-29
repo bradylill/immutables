@@ -86,6 +86,9 @@
         total-damage    (calculate-damage bot attacking-bots)]
     (update-in bot [:energy] - total-damage)))
 
+(defn- regen [bot]
+  (update-in bot [:energy] + (:regen bot)))
+
 (defn sense [bot world]
   (let [bots (:bots world)]
   (-> bot
@@ -95,6 +98,7 @@
 
 (defn react [bot]
   (-> bot
+      (regen)
       (move-bot)
       (update-velocity)))
 
