@@ -21,6 +21,9 @@
   (canvas/rotate ctx (Math/atan2 (- vx) vy))
   (canvas/stroke-style ctx "#FF0000")
   (draw-closed-polygon ctx object-vector-shape)
+
+  (draw-energy ctx )
+
   (canvas/restore ctx)
   )
 
