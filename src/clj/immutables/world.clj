@@ -3,7 +3,7 @@
 
 (def world (atom {:bots []}))
 
-(def starting-world {:bots [{:tactic :chase  :attack-radius 25 :damage 0.5 :speed 3 :sight 20 :energy 50.0 :target [500 200] :velocity [0 0] :location [618.047 809.0] :name "brady"}
+(def starting-world {:bots [{:tactic :chase  :attack-radius 25 :damage 6.5 :speed 4 :sight 50 :energy 500.0 :target [500 200] :velocity [0 0] :location [618.047 809.0] :name "brady"}
                             {:tactic :chase  :attack-radius 25 :damage 0.5 :speed 2 :sight 30 :energy 100.0 :target [300 200] :velocity [0 0] :location [451.368 935.937] :name "korny"}
                             {:tactic :escape :attack-radius 25 :damage 0.5 :speed 1 :sight 60 :energy 100.0 :target [700 200] :velocity [0 0] :location [451.377 224.457] :name "jean"}
                             {:tactic :escape :attack-radius 25 :damage 0.5 :speed 1 :sight 30 :energy 100.0 :target [350 400] :velocity [0 0] :location [1082.714 634.363] :name "sarah"}
@@ -20,13 +20,19 @@
 (defn- update-bots [world]
   (pmap #(bot/update % world) (:bots world)))
 
+(defn- remove-dead [bots]
+  (filter #(<= 0 (:energy %)) bots))
+
+(defn- next-generation [old-world]
+  (-> (update-bots old-world)
+      (remove-dead)))
+
 (defn render []
   (str @world))
 
 (defn update []
   (swap! world (fn [old-world] 
-                 (let [old-bots (:bots old-world)]
-                       (assoc-in old-world [:bots] (update-bots old-world))))))
+                 (assoc-in old-world [:bots] (next-generation old-world)))))
 
 (defn init []
   (reset! world starting-world))
