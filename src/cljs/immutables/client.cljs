@@ -68,7 +68,7 @@
 (def bot-name ($ :#botname))
 (def bot-speed ($ :#speed))
 (def bot-damage ($ :#damage))
-(def bot-range ($ :#range))
+(def bot-regen ($ :#regen))
 
 (defn hide-modal []
   (jq/trigger modal-close :click))
@@ -77,7 +77,7 @@
   (jq/val bot-name "")
   (jq/val bot-speed "50")
   (jq/val bot-damage "50")
-  (jq/val bot-range "50")
+  (jq/val bot-regen "50")
 )
 
 (defn create-bot-modal []
@@ -85,7 +85,7 @@
         {:type "POST" :data { :name (jq/val bot-name)
                              :speed (jq/val bot-speed)
                              :damage (jq/val bot-damage)
-                             :range (jq/val bot-range)}})
+                             :regen (jq/val bot-regen)}})
   (reset-modal)
   (hide-modal)
 )

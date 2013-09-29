@@ -67,14 +67,14 @@
   (+ min
      (* (- max min) (/ percent 100.0))))
 
-(defn add-user-bot [name speed damage range]
+(defn add-user-bot [name speed damage regen]
   (verify-name name)
   (verify-range speed)
   (verify-range damage)
-  (verify-range range)
+  (verify-range regen)
   (let [speed (as-int speed)
         damage (as-int damage)
-        range (as-int range)
+        regen (as-int regen)
         min-speed 1.0
         max-speed 4.0
         min-armor 1.0
@@ -90,9 +90,9 @@
         bot-speed (scale (- 100 speed) min-speed max-speed)
         bot-armor (scale speed min-armor max-armor)
         bot-damage (scale (- 100 damage) min-damage max-damage)
-        bot-regen (scale damage min-regen max-regen)
-        bot-range (scale (- 100 range) min-range max-range)
-        bot-sight (scale range min-sight max-sight)]
+        bot-range (scale damage min-range max-range)
+        bot-regen (scale (- 100 regen) min-regen max-regen)
+        bot-sight (scale regen min-sight max-sight)]
     (add-bot {:tactic :chase  ; how to choose?
               :speed bot-speed
               :armor bot-armor

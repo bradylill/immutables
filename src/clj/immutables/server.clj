@@ -22,7 +22,7 @@
   (GET "/init"  [] (response/response (do (world/init)
                                           (world/render))))
 
-  (POST "/createbot" [name speed damage range] (do (println "bot params:" name speed damage range) (world/add-user-bot name speed damage range)))
+  (POST "/createbot" [name speed damage regen] (do (println "bot params:" name speed damage regen) (world/add-user-bot name speed damage regen)))
 
   (route/resources "/")
   (route/not-found (response/resource-response "public/missing.html")))
