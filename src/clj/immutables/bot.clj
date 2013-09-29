@@ -6,6 +6,10 @@
   (let [val-range (range start end)]
     (nth val-range (rand-int (count val-range)))))
 
+(defn- rand-location [start end]
+  [(rand-range start end)
+   (rand-range start end)])
+
 (defn- update-velocity [bot]
   (let [velocity (mxo/* (mx/normalise (mxo/- (:target bot) (:location bot))) (:speed bot))]
   (assoc-in bot [:velocity] velocity)))
@@ -23,16 +27,27 @@
                    (not (= (:location bot) location)))))
           bots))
 
-(defn- target-enemy [bot bots]
+(defn- find-target [bot bots]
   (let [enemy (first (scan-for-bots (:location bot) (:sight bot) bots))]
     (if (not (nil? enemy))
       (assoc-in bot [:target] (mxo/- (:location bot) (mxo/- (:location enemy) (:location bot))))
-      (assoc-in bot [:target] [200 200]))))
+      (if (nil? (:target bot))
+        (assoc-in bot [:target] (mxo/+ (:location bot) (rand-location -40 40)))
+        bot))))
+
+(defn- clear-target [bot]
+  (let [delta    (mxo/- (:target bot) (:location bot))
+        dx       (Math/abs (first delta))
+        dy       (Math/abs (second delta))]
+    (if (and (< dx 2) (< dy 2))
+      (assoc-in bot [:target] nil)
+      bot)))
 
 (defmulti sense (fn [bot world] (:mood bot)))
 (defmethod sense :default [bot world]
   (-> bot
-      (target-enemy (:bots world))))
+      (clear-target)
+      (find-target (:bots world))))
 
 (defmulti react (fn [bot] (:mood bot)))
 (defmethod react :default [bot]
