@@ -73,10 +73,17 @@
 (defn- scan-for-attacks [bot bots]
   (filter (fn [attacking] (not (attack? attacking bot))) bots))
 
+(defn- calculate-damage [bot attacking-bots]
+  (-> (reduce (fn [total attacking-bot] 
+                (+ total (:damage attacking-bot))) 
+              0 
+              attacking-bots)
+      (/ (:armor bot))))
+
 (defn- take-damage [bot bots]
   (let [close-bots      (scan-for-bots (:location bot) 40 bots)
         attacking-bots  (scan-for-attacks bot close-bots)
-        total-damage (reduce (fn [total attacking-bot] (+ total (:damage attacking-bot))) 0 attacking-bots)]
+        total-damage    (calculate-damage bot attacking-bots)]
     (update-in bot [:energy] - total-damage)))
 
 (defn sense [bot world]
