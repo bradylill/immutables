@@ -86,12 +86,19 @@
         total-damage    (calculate-damage bot attacking-bots)]
     (update-in bot [:energy] - total-damage)))
 
+(defn- evaluate-tactics [bot]
+  (let [max-energy 100.0]
+    (if (< (:energy bot) (/ max-energy 2.0))
+      (assoc-in bot [:tactic] :escape)
+      (assoc-in bot [:tactic] :chase))))
+
 (defn- regen [bot]
   (update-in bot [:energy] + (:regen bot)))
 
 (defn sense [bot world]
   (let [bots (:bots world)]
   (-> bot
+      (evaluate-tactics)
       (take-damage bots)
       (clear-target)
       (find-target bots))))
