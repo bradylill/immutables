@@ -68,20 +68,27 @@
     {:type "POST" :data (.val ($ :#botname))}))
 
 (def modal-dialog ($ :#botModal))
+(def bot-name ($ :#botname))
+(def bot-speed ($ :#speed))
+(def bot-damage ($ :#damage))
+(def bot-range ($ :#range))
 
 (defn hide-modal []
   (.foundation modal-dialog "reveal" "close"))
 
 (defn reset-modal []
-  (jq/val ($ :#botname) "")
-  (jq/val ($ :#speed) "50")
-  (jq/val ($ :#damage) "50")
-  (jq/val ($ :#range) "50")
+  (jq/val bot-name "")
+  (jq/val bot-speed "50")
+  (jq/val bot-damage "50")
+  (jq/val bot-range "50")
 )
 
 (defn create-bot-modal []
   (ajax "createbot"
-        {:type "POST" :data (.val ($ :#botname))})
+        {:type "POST" :data { :name (jq/val bot-name)
+                             :speed (jq/val bot-speed)
+                             :damage (jq/val bot-damage)
+                             :range (jq/val bot-range)}})
   (reset-modal)
   (hide-modal)
 )

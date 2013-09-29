@@ -1,6 +1,7 @@
 (ns immutables.server
   (:require [ring.adapter.jetty       :as jetty]
             [ring.middleware.resource :as resources]
+            [ring.middleware.params   :refer [wrap-params]]
             [ring.util.response       :as response]
             [compojure.core           :refer :all]
             [compojure.route          :as route]
@@ -13,7 +14,7 @@
                             (Thread/sleep 50)
                             (recur))))))
 
-(defroutes app
+(defroutes game-routes
   (GET "/" [] (response/redirect "/game"))
   (GET "/game" []
        (response/resource-response "public/game.html"))
@@ -21,11 +22,12 @@
   (GET "/init"  [] (response/response (do (world/init)
                                           (world/render))))
 
-  (POST "/createbot" {body :body} (world/make-random-bot (slurp body)))
+  (POST "/createbot" [name speed damage range] (do (println "bot params:" name speed damage range) (world/add-user-bot name speed damage range)))
 
   (route/resources "/")
-  (route/not-found (response/resource-response "public/missing.html"))
-  )
+  (route/not-found (response/resource-response "public/missing.html")))
+
+(def app (wrap-params game-routes))
 
 (defn -main [& args]
   (init)

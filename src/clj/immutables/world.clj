@@ -38,6 +38,7 @@
   (reset! world starting-world))
 
 (defn add-bot [new-bot]
+  (println "adding bot:" new-bot)
   (swap! world (fn [current-world]
                  (let [bots (:bots current-world)]
                    (assoc-in current-world [:bots] (conj bots new-bot))))))
@@ -45,3 +46,60 @@
 (defn make-random-bot [name]
   (add-bot {:tactic :chase :attack-radius 25 :damage 8.5 :speed 3 :sight 20 :energy 50.0 :target [840 525] :velocity [0 0] :location [(rand 1680) (rand 1050)] :name name})
   )
+
+(defn as-int [str]
+  (Integer/parseInt str))
+
+(defn verify-name [field]
+  (if (or (clojure.string/blank? field)
+          (< 255 (.length field)))
+    (throw (Exception. (str "Invalid name '" field "'")))))
+
+(defn verify-range [field]
+  (let [val (as-int field)]
+    (if (or (> 0 val)
+            (< 100 val))
+      (throw (Exception. (str "Invalid field '" field "' - must be int 0 to 100"))))))
+
+(defn scale [percent min max]
+  (+ min
+     (* (- max min) (/ percent 100.0))))
+
+(defn add-user-bot [name speed damage range]
+  (verify-name name)
+  (verify-range speed)
+  (verify-range damage)
+  (verify-range range)
+  (let [speed (as-int speed)
+        damage (as-int damage)
+        range (as-int range)
+        min-speed 1.0
+        max-speed 4.0
+        min-armor 1.0
+        max-armor 2.0
+        min-damage 1.0
+        max-damage 10.0
+        min-regen 0.0
+        max-regen 10.0
+        min-range 10.0
+        max-range 30.0
+        min-sight 20.0
+        max-sight 50.0
+        bot-speed (scale speed min-speed max-speed)
+        bot-armor (scale (- 100 speed) min-armor max-armor)
+        bot-damage (scale damage min-damage max-damage)
+        bot-regen (scale (- 100 damage) min-regen max-regen)
+        bot-range (scale range min-range max-range)
+        bot-sight (scale (- 100 range) min-sight max-sight)
+        ]
+    (add-bot {:speed bot-speed
+              :armor bot-armor
+              :damage bot-damage
+              :regen bot-regen
+              :attack-radius bot-range
+              :sight bot-sight
+              :energy 100.0
+              :target [840 525]
+              :velocity [0 0]
+              :location [(rand 1680) (rand 1050)]
+              :name name})))
