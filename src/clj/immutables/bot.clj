@@ -54,7 +54,7 @@
 (defn- take-damage [bot bots]
   (let [close-bots   (scan-for-bots (:location bot) (:attack-radius bot) bots)
         total-damage (reduce (fn [total bot] (+ total (:damage bot))) 0 close-bots)]
-    (update-in bot [:energy] (partial - total-damage))))
+    (update-in bot [:energy] - total-damage)))
 
 (defn sense [bot world]
   (let [bots (:bots world)]
