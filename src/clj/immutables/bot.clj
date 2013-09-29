@@ -27,10 +27,18 @@
                    (not (= (:location bot) location)))))
           bots))
 
+(defmulti tactic (fn [bot enemy] (:tactic bot)))
+
+(defmethod tactic :chase [bot enemy] 
+  (mxo/+ (:location enemy) (rand-location -10 10)))
+
+(defmethod tactic :escape [bot enemy]
+  (mxo/- (:location bot) (mxo/- (:location enemy) (:location bot))))
+
 (defn- find-target [bot bots]
   (let [enemy (first (scan-for-bots (:location bot) (:sight bot) bots))]
     (if (not (nil? enemy))
-      (assoc-in bot [:target] (mxo/- (:location bot) (mxo/- (:location enemy) (:location bot))))
+      (assoc-in bot [:target] (tactic bot enemy))
       (if (nil? (:target bot))
         (assoc-in bot [:target] (mxo/+ (:location bot) (rand-location -40 40)))
         bot))))
@@ -48,16 +56,14 @@
         total-damage (reduce (fn [total bot] (+ total (:damage bot))) 0 close-bots)]
     (update-in bot [:energy] (partial - total-damage))))
 
-(defmulti sense (fn [bot world] (:mood bot)))
-(defmethod sense :default [bot world]
+(defn sense [bot world]
   (let [bots (:bots world)]
   (-> bot
       (take-damage bots)
       (clear-target)
       (find-target bots))))
 
-(defmulti react (fn [bot] (:mood bot)))
-(defmethod react :default [bot]
+(defn react [bot]
   (-> bot
       (move-bot)
       (update-velocity)))
