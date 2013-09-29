@@ -19,7 +19,9 @@ meta.foundation-mq-large {
 
 html,
 body {
-  font-size: 100%; }
+  font-size: 100%;
+  overflow: hidden
+  }
 
 body {
   background: white;
