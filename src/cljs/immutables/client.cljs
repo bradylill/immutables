@@ -67,7 +67,27 @@
   (ajax "createbot"
     {:type "POST" :data (.val ($ :#botname))}))
 
+(def modal-dialog ($ :#botModal))
+
+(defn hide-modal []
+  (.foundation modal-dialog "reveal" "close"))
+
+(defn reset-modal []
+  (jq/val ($ :#botname) "")
+  (jq/val ($ :#speed) "50")
+  (jq/val ($ :#damage) "50")
+  (jq/val ($ :#range) "50")
+)
+
+(defn create-bot-modal []
+  (ajax "createbot"
+        {:type "POST" :data (.val ($ :#botname))})
+  (reset-modal)
+  (hide-modal)
+)
+
 (jq/bind pausebtn :click toggle-paused)
 (jq/bind ($ :#init) :click init-world)
-(jq/bind ($ :#create) :click create-bot)
+(jq/bind ($ :#modalCreate) :click create-bot-modal)
+(jq/bind ($ :#modalCancel) :click hide-modal)
 (jq/document-ready start-game)

@@ -20,6 +20,23 @@ html, body {
   z-index: -1000;
 }
 
+#botModal input.slide {
+    width: 100%;
+}
+
+#botModal .row .first {
+    text-align: right;
+}
+
+#botModal .sliders {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#botModal .buttons {
+    padding-top: 10px;
+}
+
 h1 {
  //   color: #6B3535;
     font-variant: small-caps;

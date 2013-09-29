@@ -26,14 +26,51 @@
                 <button id="pause">(loading)</button>
                 <button id="init">Initialize world</button>
             </div>
-            <div class="small-5 columns">
-                <input type="text" id="botname" placeholder="Inline Text Input">
-            </div>
-            <div class="small-2 columns">
-                <button id="create">Create</button>
+            <div class="small-1 columns">
+                <button data-reveal-id="botModal">Create</button>
             </div>
         </div>
     </div>
+    <div id="botModal" class="reveal-modal small">
+      <div class="container">
+      <h2>Create a new bot</h2>
+      <p class="lead">Please enter bot details</p>
+      <label for="botname">Name:</label>
+      <input type="text" id="botname" placeholder="Inline Text Input"/>
+      <div class="row sliders">
+        <div class="small-3 columns first">Fastest</div>
+        <div class="small-6 columns">
+        <input class="slide" id="speed" type="range" min="0" max="100" value="50"/>
+        </div>
+        <div class="small-3 columns">Most Armor</div>
+      </div>
+      <div class="row sliders">
+        <div class="small-3 columns first">Most Damage</div>
+        <div class="small-6 columns">
+        <input class="slide" id="damage" type="range" min="0" max="100" value="50"/>
+        </div>
+        <div class="small-3 columns">Most Range</div>
+      </div>
+      <div class="row sliders">
+        <div class="small-3 columns first">Damage Range</div>
+        <div class="small-6 columns">
+        <input class="slide" id="range" type="range" min="0" max="100" value="50"/>
+        </div>
+        <div class="small-3 columns">Sight Range</div>
+      </div>
+      <div class="row buttons">
+        <div class="small-3 columns"><button id="modalCreate">Create</button></div>
+        <div class="small-3 columns"><button id="modalCancel">Cancel</button></div>
+        </div>
+      </div> <!-- container -->
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+    <div id="errorModal" class="reveal-modal small">
+      <h2>We're sorry...</h2>
+      <p class="lead">Something went wrong creating your bot. Please try again.</p>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+
     <script src="js/foundation.min.js"></script>
     <script src="js/cljs.js"></script>
     <script>
