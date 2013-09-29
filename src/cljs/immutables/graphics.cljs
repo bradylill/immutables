@@ -14,7 +14,7 @@
   )
 
 (defn draw-energy [ctx energy]
-  (let [energy-normalized (max 0 (/ energy 100.0))]
+  (let [energy-normalized (min 1.0 (max 0 (/ energy 100.0)))]
     (canvas/fill-style ctx (get ["#FF0000" "#FFFF00" "#00FF00"] (int (* energy-normalized 2))))
     (canvas/fill-rect ctx {:x (- (* 7 scale)) :y (- (* 11 scale)) :w (* energy-normalized (* 14 scale)) :h (* 1 scale)})
     ))

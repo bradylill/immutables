@@ -24,7 +24,7 @@
   (POST "/createbot" {body :body} (world/make-random-bot (slurp body)))
 
   (route/resources "/")
-  (route/not-found (response/resource-response "public/help.html"))
+  (route/not-found (response/resource-response "public/missing.html"))
   )
 
 (defn -main [& args]

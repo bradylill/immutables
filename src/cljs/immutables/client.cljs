@@ -86,8 +86,13 @@
   (hide-modal)
 )
 
+(defn nav-to-info []
+  (set! (.-location js/window) "http://clojurecup.com/app.html?app=immutables")
+  )
+
 (jq/bind pausebtn :click toggle-paused)
 (jq/bind ($ :#init) :click init-world)
+(jq/bind ($ :#info) :click nav-to-info)
 (jq/bind ($ :#modalCreate) :click create-bot-modal)
 (jq/bind ($ :#modalCancel) :click hide-modal)
 (jq/document-ready start-game)
