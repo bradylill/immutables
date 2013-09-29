@@ -65,9 +65,18 @@
       (assoc-in bot [:target] nil)
       bot)))
 
+(defn- attack? [attacking-bot target-bot]
+  (let [attack-delta (mxo/- (:location target-bot) (:location attacking-bot))
+        attack-mag   (mx/length attack-delta)]
+    (< (:attack-radius attacking-bot) attack-mag)))
+
+(defn- scan-for-attacks [bot bots]
+  (filter (fn [attacking] (not (attack? attacking bot))) bots))
+
 (defn- take-damage [bot bots]
-  (let [close-bots   (scan-for-bots (:location bot) (:attack-radius bot) bots)
-        total-damage (reduce (fn [total bot] (+ total (:damage bot))) 0 close-bots)]
+  (let [close-bots      (scan-for-bots (:location bot) 40 bots)
+        attacking-bots  (scan-for-attacks bot close-bots)
+        total-damage (reduce (fn [total attacking-bot] (+ total (:damage attacking-bot))) 0 attacking-bots)]
     (update-in bot [:energy] - total-damage)))
 
 (defn sense [bot world]
