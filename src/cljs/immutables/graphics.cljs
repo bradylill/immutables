@@ -22,14 +22,15 @@
   (.toUpperCase (.toString (bit-and (bit-or (js/parseInt (str name) 36) (bit-not (hash name))) 0xFFFFFF) 16))
   )
 
-(defn draw-object [ctx delta {name :name [x y] :location [vx vy] :velocity energy :energy}]
+(defn draw-object [ctx delta {name :name [tx ty] :target [x y] :location [vx vy] :velocity energy :energy}]
   (canvas/save ctx)
-  (canvas/translate ctx (+ x (* vx delta)) (+ y (* vy delta)))
   (canvas/fill-style ctx (str "#" (name-to-color name)))
+  (canvas/circle ctx {:x tx :y ty :r 2})
+  (canvas/translate ctx (+ x (* vx delta)) (+ y (* vy delta)))
   (canvas/text ctx {:text name :x (* (.-width (.measureText ctx name)) (- 0.5)) :y (* 14 scale)})
   (draw-energy ctx energy)
+  (canvas/stroke-style ctx (str "#" (name-to-color name)))
   (canvas/rotate ctx (Math/atan2 (- vx) vy))
-  (canvas/stroke-style ctx "#FF0000")
   (draw-closed-polygon ctx object-vector-shape)
   (canvas/restore ctx)
   )
