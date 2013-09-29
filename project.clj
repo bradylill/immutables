@@ -14,9 +14,11 @@
   :aliases {
             "prodrun" ["with-profile" "prod" "do" "cljsbuild" "clean," "ring" "server"]
             "prodbuild" ["with-profile" "prod" "do" "cljsbuild" "clean," "ring" "uberjar"]
-            ; then scp target/immutables-0.1.0-SNAPSHOT-standalone.jar clojurecup@192.241.193.31:immutables.jar
+                                        ; see also push.sh
+            "clean-srv" ["do" "cljsbuild" "clean," "ring" "server-headless"]
+            
             }
-  :injections [(require '[cljs.repl.browser :as brepl]
+  :Injections [(require '[cljs.repl.browser :as brepl]
                         '[cemerick.piggieback :as pb])
                (defn browser-repl []
                  (pb/cljs-repl :repl-env (brepl/repl-env :port 9000)))]
