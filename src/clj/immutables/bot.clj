@@ -15,8 +15,10 @@
    (rand-range start end)])
 
 (defn- update-velocity [bot]
-  (let [velocity (mxo/* (mx/normalise (mxo/- (:target bot) (:location bot))) (:speed bot))]
-  (assoc-in bot [:velocity] velocity)))
+  (if (= (:target bot) (:location bot))
+    (assoc-in bot [:velocity] [0.0 0.0])
+    (let [velocity (mxo/* (mx/normalise (mxo/- (:target bot) (:location bot))) (:speed bot))]
+      (assoc-in bot [:velocity] velocity))))
 
 (defn- fix-loc [bot lx ly mx my]
   (-> bot (assoc-in [:location] [lx ly]) (assoc-in [:target] [mx my])))
