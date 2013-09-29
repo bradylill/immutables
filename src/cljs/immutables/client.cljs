@@ -63,6 +63,11 @@
         {:dataType "edn"
          :success identity}))
 
+(defn create-bot []
+  (ajax "createbot"
+    {:type "POST" :data (.val ($ :#botname))}))
+
 (jq/bind pausebtn :click toggle-paused)
 (jq/bind ($ :#init) :click init-world)
+(jq/bind ($ :#create) :click create-bot)
 (jq/document-ready start-game)

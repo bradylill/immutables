@@ -20,8 +20,12 @@
   (GET "/world" [] (response/response (world/render)))
   (GET "/init"  [] (response/response (do (world/init)
                                           (world/render))))
+
+  (POST "/createbot" {body :body} (world/make-random-bot (slurp body)))
+
   (route/resources "/")
-  (route/not-found (response/resource-response "public/help.html")))
+  (route/not-found (response/resource-response "public/help.html"))
+  )
 
 (defn -main [& args]
   (init)

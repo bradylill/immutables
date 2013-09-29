@@ -35,3 +35,7 @@
   (swap! world (fn [current-world]
                  (let [bots (:bots current-world)]
                    (assoc-in current-world [:bots] (conj bots new-bot))))))
+
+(defn make-random-bot [name]
+  (add-bot {:attack-radius 25 :damage 8.5 :speed 3 :sight 20 :energy 50.0 :target [840 525] :velocity [0 0] :location [(rand 1680) (rand 1050)] :name name})
+  )

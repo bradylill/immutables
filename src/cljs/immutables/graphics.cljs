@@ -15,11 +15,11 @@
 
 (defn draw-energy [ctx energy]
   (canvas/fill-style ctx "#00FF00")
-  (canvas/fill-rect ctx {:x (- (* 7 scale)) :y (- (* 11 scale)) :w (* 14 scale) :h (* 1 scale)})
+  (canvas/fill-rect ctx {:x (- (* 7 scale)) :y (- (* 11 scale)) :w (* (/ energy 100.0) (* 14 scale)) :h (* 1 scale)})
   )
 
 (defn name-to-color [name]
-  (.toUpperCase (.toString (bit-and (bit-or (js/parseInt (str name) 36) (bit-not (hash name))) 0xFFFFFF) 16))
+  (.toUpperCase (.toString (bit-and (bit-or (js/parseInt (str (reverse name)) 36) (bit-not (hash name))) 0xFFFFFF) 16))
   )
 
 (defn draw-object [ctx delta {name :name [tx ty] :target [x y] :location [vx vy] :velocity energy :energy}]
