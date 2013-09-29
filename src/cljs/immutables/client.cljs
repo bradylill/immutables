@@ -63,18 +63,15 @@
         {:dataType "edn"
          :success identity}))
 
-(defn create-bot []
-  (ajax "createbot"
-    {:type "POST" :data (.val ($ :#botname))}))
-
 (def modal-dialog ($ :#botModal))
+(def modal-close ($ :#modalClose))
 (def bot-name ($ :#botname))
 (def bot-speed ($ :#speed))
 (def bot-damage ($ :#damage))
 (def bot-range ($ :#range))
 
 (defn hide-modal []
-  (.foundation modal-dialog "reveal" "close"))
+  (jq/trigger modal-close :click))
 
 (defn reset-modal []
   (jq/val bot-name "")
