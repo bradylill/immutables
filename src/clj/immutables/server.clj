@@ -14,12 +14,14 @@
                             (recur))))))
 
 (defroutes app
-  (GET "/" [] (response/file-response "game.html" {:root "resources/public"}))
+  (GET "/" [] (response/redirect "/game"))
+  (GET "/game" []
+       (response/resource-response "public/game.html"))
   (GET "/world" [] (response/response (world/render)))
   (GET "/init"  [] (response/response (do (world/init)
                                           (world/render))))
   (route/resources "/")
-  (route/not-found (response/file-response "help.html" {:root "resources/public"})))
+  (route/not-found (response/resource-response "public/help.html")))
 
 (defn -main [& args]
   (init)
