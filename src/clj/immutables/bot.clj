@@ -2,6 +2,10 @@
   (:require [clojure.core.matrix           :as mx]
             [clojure.core.matrix.operators :as mxo]))
 
+;size shouldn't be here...
+(def world-width 1680)
+(def world-height 1050)
+
 (defn- rand-range [start end]
   (let [val-range (range start end)]
     (nth val-range (rand-int (count val-range)))))
@@ -13,6 +17,12 @@
 (defn- update-velocity [bot]
   (let [velocity (mxo/* (mx/normalise (mxo/- (:target bot) (:location bot))) (:speed bot))]
   (assoc-in bot [:velocity] velocity)))
+
+(defn- keep-inbounds [location]
+  (let [lx (first location)
+        ly (second location)]
+    [(mod lx world-width)
+     (mod ly world-height)]))
 
 (defn- move-bot [bot]
   (let [location (:location bot)
@@ -41,7 +51,8 @@
 (defn- find-target [bot bots]
   (let [enemy (first (scan-for-bots (:location bot) (:sight bot) bots))]
     (if (not (nil? enemy))
-      (assoc-in bot [:target] (tactic bot enemy))
+      (assoc-in bot [:target] (-> (tactic bot enemy)
+                                  (keep-inbounds)))
       (if (nil? (:target bot))
         (assoc-in bot [:target] (mxo/+ (:location bot) (rand-location -40 40)))
         bot))))
