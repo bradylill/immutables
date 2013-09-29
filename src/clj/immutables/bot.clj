@@ -18,18 +18,20 @@
   (let [velocity (mxo/* (mx/normalise (mxo/- (:target bot) (:location bot))) (:speed bot))]
   (assoc-in bot [:velocity] velocity)))
 
+(defn- fix-loc [bot lx ly mx my]
+  (-> bot (assoc-in [:location] [lx ly]) (assoc-in [:target] [mx my])))
+
 (defn- keep-inbounds [bot]
   (let [location (:location bot)
         lx (first location)
         ly (second location)
         mx (/ world-width 2)
         my (/ world-height 2)]
-    (cond
-      (> lx world-width)  (-> bot (assoc-in [:location] [2 ly]) (assoc-in [:target] [mx my]))
-      (< lx 0)            (-> bot (assoc-in [:location] [(- world-width 2) ly]) (assoc-in [:target] [mx my]))
-      (> ly world-height) (-> bot (assoc-in [:location] [lx 2]) (assoc-in [:target] [mx my]))
-      (< ly 0)            (-> bot (assoc-in [:location] [lx (- world-height 2)]) (assoc-in [:target] [mx my]))
-      :else bot)))
+    (cond-> bot
+      (> lx world-width)  (fix-loc 2 ly mx my)
+      (< lx 0)            (fix-loc (- world-width 2) ly mx my)
+      (> ly world-height) (fix-loc lx 2 mx my)
+      (< ly 0)            (fix-loc lx (- world-height 2) mx my))))
 
 (defn- move-bot [bot]
   (let [location (:location bot)

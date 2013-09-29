@@ -85,8 +85,8 @@
         max-regen 0.1
         min-range 10.0
         max-range 30.0
-        min-sight 10.0
-        max-sight 80.0
+        min-sight 20.0
+        max-sight 160.0
         bot-speed (scale (- 100 speed) min-speed max-speed)
         bot-armor (scale speed min-armor max-armor)
         bot-damage (scale (- 100 damage) min-damage max-damage)
