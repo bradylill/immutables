@@ -43,11 +43,18 @@
       (assoc-in bot [:target] nil)
       bot)))
 
+(defn- take-damage [bot bots]
+  (let [close-bots   (scan-for-bots (:location bot) (:attack-radius bot) bots)
+        total-damage (reduce (fn [total bot] (+ total (:damage bot))) 0 close-bots)]
+    (update-in bot [:energy] (partial - total-damage))))
+
 (defmulti sense (fn [bot world] (:mood bot)))
 (defmethod sense :default [bot world]
+  (let [bots (:bots world)]
   (-> bot
+      (take-damage bots)
       (clear-target)
-      (find-target (:bots world))))
+      (find-target bots))))
 
 (defmulti react (fn [bot] (:mood bot)))
 (defmethod react :default [bot]
