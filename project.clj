@@ -28,7 +28,9 @@
   :hooks [leiningen.cljsbuild]
   :source-paths ["src/clj"]
   :profiles {:dev
-             {:cljsbuild {:builds
+             {:dependencies [[midje "1.6-beta1"]]
+              :plugins [[lein-midje "3.1.2"]]
+              :cljsbuild {:builds
                           [{:source-paths ["src/brepl" "src/cljs"]
                             :compiler {:output-to "resources/public/js/cljs.js"
                                        :externs ["resources/public/js/externs/jquery-1.9.js"]
