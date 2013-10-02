@@ -21,12 +21,11 @@
             :velocity [1.6641005886756874
                        2.4961508830135313]}))
 
-(fact "fix-loc overrides the bots location and target"
-      (let [test-bot {:location [1 2]
-                      :target   [3 5]}]
-        (bot/fix-loc test-bot 9 8 7 6)
-          => {:location [9 8]
-              :target   [7 6]}))
+(fact "set-location overrides the bots current location"
+      (bot/set-location {:location [0 0]} [5 4]) => {:location [5 4]})
+
+(fact "set-target overrides the bots current target"
+      (bot/set-target {:target [0 0]} [1 3]) => {:target [1 3]})
 
 (fact "keep-inbounds adjusts the bots position so that it wraps around the world"
       (let [middle  [840 525]]
