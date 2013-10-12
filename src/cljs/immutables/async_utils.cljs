@@ -4,6 +4,10 @@
                [cljs.core.async :refer [chan close! >! <! timeout put! sliding-buffer]])
   (:require-macros [cljs.core.async.macros :as m :refer [go]]))
 
+(defrecord Bot [tactic regen armor attack-radius damage speed sight energy target velocity location name])
+
+(cljs.reader/register-tag-parser! "immutables.world.Bot" map->Bot)
+
 (defn ajax-get-1 [url]
   (let [ch (chan 1)]
     (ajax url
